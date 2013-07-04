@@ -64,7 +64,7 @@ describe('FileProcessor', function() {
 			};
 
 			var result = fp.replaceWith(block);
-			assert.equal(result, '  <link rel="stylesheet" href="foo.css">');
+			assert.equal(result, '  <link rel="stylesheet" href="foo.css"/>');
 		});
 
 		it('should replace js blocks with a link to a javascript file', function() {
@@ -156,8 +156,8 @@ describe('FileProcessor', function() {
       });
 
       it('should replace file referenced from root', function () {
-	        var replaced = fp.replaceWithRevved('<link rel="stylesheet" href="/styles/main.css">', ['']);
-	        assert.equal(replaced, '<link rel="stylesheet" href="/styles/main.1234.css">');
+	        var replaced = fp.replaceWithRevved('<link rel="stylesheet" href="/styles/main.css"/>', ['']);
+	        assert.equal(replaced, '<link rel="stylesheet" href="/styles/main.1234.css"/>');
 	      });
 
       it('should not replace the root (i.e /)', function () {
@@ -174,10 +174,11 @@ describe('FileProcessor', function() {
 	      });
 
       it('should allow for several search paths', function () {
-	        var content = '<script src="foo.js" type="text/javascript"></script><link rel="stylesheet" href="/baz.css">';
+	        var content = '<script src="foo.js" type="text/javascript"></script><link rel="stylesheet" href="/baz.css"><link rel="stylesheet" href="/baz.css"/>';
 	        var replaced = fp.replaceWithRevved(content, ['app', 'tmp']);
 
-	        assert.ok(replaced.match(/<link rel="stylesheet" href="\/baz\.8910\.css">/));
+          assert.ok(replaced.match(/<link rel="stylesheet" href="\/baz\.8910\.css"\/>/));
+          assert.ok(replaced.match(/<link rel="stylesheet" href="\/baz\.8910\.css">/));
 	        assert.ok(replaced.match(/<script src="foo\.1234\.js" type="text\/javascript"><\/script>/));
 	      });
     });
@@ -207,6 +208,10 @@ describe('FileProcessor', function() {
 	      var content = '<link rel="stylesheet" href="bar.css">';
 	      var replaced = fp.replaceWithRevved(content, ['app']);
 	      assert.equal(replaced, '<link rel="stylesheet" href="bar.5678.css">');
+        content = '<link rel="stylesheet" href="bar.css"/>';
+        replaced = fp.replaceWithRevved(content, ['app']);
+        assert.equal(replaced, '<link rel="stylesheet" href="bar.5678.css"/>');
+
 	    });
 
     it('should replace img reference with revved version', function () {

@@ -132,8 +132,8 @@ describe('usemin', function () {
 
         var changed = grunt.file.read('build/foo/index.html');
 
-        assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png">/));
-        assert.ok(changed.match(/<link rel=\"stylesheet\" href=\"styles\/main\.min\.css\">/));
+        assert.ok(changed.match(/<img src="\.\.\/images\/test\.23012\.png"\>/));
+        assert.ok(changed.match(/<link rel=\"stylesheet\" href=\"styles\/main\.min\.css\"\/>/));
         assert.ok(changed.match(/<img src=\"\.\.\/images\/misc\/test\.2a436\.png\">/));
 
       });
