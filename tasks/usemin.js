@@ -112,8 +112,8 @@ module.exports = function (grunt) {
 
   grunt.registerMultiTask('useminPrepare', 'Using HTML markup as the primary source of information', function () {
     var options = this.options();
+
     // collect files
-    var files = grunt.file.expand({filter: 'isFile'}, this.data);
     var uglifyName = options.uglify || 'uglify';
     var cssminName = options.cssmin || 'cssmin';
     var dest = options.dest;
@@ -124,20 +124,17 @@ module.exports = function (grunt) {
     var cssmin = grunt.config(cssminName) || {};
     var requirejs = grunt.config('requirejs') || {};
 
-    grunt.log
-      .writeln('Going through ' + grunt.log.wordlist(files) + ' to update the config')
-      .writeln('Looking for build script HTML comment blocks');
+    var simpleStyle = !this.data.files && !this.data.src;
 
-    files = files.map(function (filepath) {
-      return {
-        path: filepath,
-        body: grunt.file.read(filepath)
-      };
-    });
+    this.files.forEach(function (fileObj) {
+      grunt.log
+        .writeln('Going through ' + fileObj.src + ' to update the config')
+        .writeln('Looking for build script HTML comment blocks');
 
-    files.forEach(function (file) {
+      var fileDest = simpleStyle ? dest : path.dirname(fileObj.dest);
+      var body = grunt.file.read(fileObj.src);
       var revvedfinder = new RevvedFinder(function (p) { return grunt.file.expand({filter: 'isFile'}, p); });
-      var proc = new HTMLProcessor(path.dirname(file.path), dest, file.body, revvedfinder, function (msg) {
+      var proc = new HTMLProcessor(path.dirname(fileObj.src), fileDest, body, revvedfinder, function (msg) {
         grunt.log.writeln(msg);
       });
 

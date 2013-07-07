@@ -76,6 +76,19 @@ It is using only one target: `html`, with a list of the concerned files. For exa
 }
 ```
 
+Targets can also be configured using the grunt src-dest files syntax http://gruntjs.com/configuring-tasks#files, e.g.
+
+```js
+'useminPrepare': {
+  foo: {
+    files: { 'dest1/index.html': 'index.html' }
+  },
+  bar: {
+    files: { 'dest2/index.html': 'index.html' }
+  }
+}
+```
+
 ### Options
 
 #### uglify
