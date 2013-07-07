@@ -105,6 +105,19 @@ If you need to change the 'root' dir, use the `root` option (see bellow).
 }
 ```
 
+Targets can also be configured using the grunt src-dest files syntax http://gruntjs.com/configuring-tasks#files, e.g.
+
+```js
+'useminPrepare': {
+  foo: {
+    files: { 'dest1/index.html': 'index.html' }
+  },
+  bar: {
+    files: { 'dest2/index.html': 'index.html' }
+  }
+}
+```
+
 ### Options
 
 ### dest
